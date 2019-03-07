@@ -4,7 +4,7 @@
 
 ### Running
 
-Below there is an example of docker-compose.yml that uses alexandre/flyway:1.0.1 to migrate the SQL files from the directory named migrations:
+Below there is an example of docker-compose.yml that uses alexandre/flyway:1.0.2 to migrate the SQL files from the directory named **migrations**:
 
 ```yml
 version: '2'
@@ -40,8 +40,7 @@ services:
 
     schema:
         image: arcanjoqueiroz/flyway:1.0.2
-        entrypoint: wait-for-postgres --host postgres --port 5432 --user alexandre --password alexandre --database alexandre --seconds 20 --maxAttempts 5
-        command: flyway -url=jdbc:postgresql://postgres:5432/alexandre -schemas=alexandre -user=alexandre -password=alexandre migrate
+        entrypoint: /flyway/sql/migrate.sh
         volumes:
           - ./migrations:/flyway/sql
           - ./drivers:/flyway/drivers
@@ -55,8 +54,25 @@ networks:
         driver: bridge
 
 ```
+Inside the **migrations** directory you should create the **migrate.sh** file as in the following example:
 
-You have to mount a directory with a database compatible JDBC Driver into /flyway/drivers.
+```sh
+#!/bin/bash
+wait-for-postgres \
+    --host postgres \
+    --port 5432 \
+    --user root \
+    --password root \
+    --database root \
+    --seconds 20 \
+    --maxAttempts 10 && flyway \
+                -url=jdbc:postgresql://postgres:5432/root \
+                -schemas=root \
+                -user=root \
+                -password=root migrate
+```
+
+Inside the **drivers** directory you should save the target database JDBC Driver used by Flyway.
 
 This container uses [wait-for](https://github.com/ArcanjoQueiroz/wait-for) to wait for PostgreSQL database.
 
