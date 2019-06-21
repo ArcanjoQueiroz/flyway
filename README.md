@@ -4,13 +4,13 @@
 
 ### Running
 
-There is an example below of a docker-compose.yml that uses alexandre/flyway:1.0.2 to migrate the SQL files inside the  **migrations** directory:
+The following docker-compose.yml example uses **arcanjoqueiroz/flyway:1.0.2** to migrate the SQL files inside the  **migrations** directory:
 
 ```yml
-version: '2'
+version: '3'
 services:
     postgres:
-        image: postgres
+        image: postgres: 11-alpine
         restart: unless-stopped
         ports:
           - "5432:5432"
@@ -20,7 +20,7 @@ services:
         networks:
           - postgres
         volumes:
-          - $HOME/postgresql:/var/lib/postgresql
+          - $HOME/docker/postgresql:/var/lib/postgresql
           - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
     pgadmin:
@@ -36,7 +36,7 @@ services:
         links:
           - postgres:postgres
         volumes:
-          - $HOME/pgadmin:/root/.pgadmin
+          - $HOME/docker/pgadmin:/root/.pgadmin
 
     schema:
         image: arcanjoqueiroz/flyway:1.0.2
