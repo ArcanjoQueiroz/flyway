@@ -4,7 +4,7 @@
 
 ### Running
 
-Below there is an example of docker-compose.yml that uses alexandre/flyway:1.0.2 to migrate the SQL files from the directory named **migrations**:
+There is an example below of a docker-compose.yml that uses alexandre/flyway:1.0.2 to migrate the SQL files inside the  **migrations** directory:
 
 ```yml
 version: '2'
@@ -40,7 +40,9 @@ services:
 
     schema:
         image: arcanjoqueiroz/flyway:1.0.2
-        entrypoint: /flyway/sql/migrate.sh
+        command: >
+          sh -c "wait-for-postgres --host postgres --port 5432 --user root --password root --database root --seconds 20 --maxAttempts 10 
+          && flyway -url=jdbc:postgresql://postgres:5432/root -schemas=root -user=root -password=root migrate"
         volumes:
           - ./migrations:/flyway/sql
           - ./drivers:/flyway/drivers
@@ -54,28 +56,11 @@ networks:
         driver: bridge
 
 ```
-Inside the **migrations** directory you should create the **migrate.sh** file as in the following example:
 
-```sh
-#!/bin/bash
-wait-for-postgres \
-    --host postgres \
-    --port 5432 \
-    --user root \
-    --password root \
-    --database root \
-    --seconds 20 \
-    --maxAttempts 10 && flyway \
-                -url=jdbc:postgresql://postgres:5432/root \
-                -schemas=root \
-                -user=root \
-                -password=root migrate
-```
-
-Inside the **drivers** directory you should save the target database JDBC Driver used by Flyway.
+Save the target database JDBC Driver used by Flyway inside the **drivers** directory.
 
 This container uses [wait-for](https://github.com/ArcanjoQueiroz/wait-for) to wait for PostgreSQL database.
 
-### License
+### Licensing
 
-Apache 2
+[Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0.html)
