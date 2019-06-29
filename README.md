@@ -1,6 +1,6 @@
 # Generic Flyway Docker Container
 
-## How to use
+## Usage
 
 ### Running
 
