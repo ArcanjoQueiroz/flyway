@@ -29,7 +29,7 @@ services:
     ports:
       - "5050:5050"
     environment:
-      DEFAULT_USER: "alexandre.queiroz@live.com"
+      DEFAULT_USER: "alexandre@oracle.com"
       DEFAULT_PASSWORD: "alexandre"
     networks:
       - postgres
