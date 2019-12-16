@@ -1,12 +1,3 @@
-# Generic Flyway Docker Container
-
-## Usage
-
-### Running
-
-The following docker-compose.yml example uses **arcanjoqueiroz/flyway:1.0.3** to migrate the SQL files inside the  **migrations** directory:
-
-```yml
 version: '3'
 services:
   postgres:
@@ -42,16 +33,17 @@ services:
       sh -c "wait-for --type postgres \
       	--host postgres \
       	--port 5432 \
-      	--user root \
-      	--password root \
-      	--name root \
+      	--user test \
+      	--password test \
+      	--name test \
       	--seconds 20 \
       	--maxAttempts 10 && \
         flyway \
-          -url=jdbc:postgresql://postgres:5432/root \
-          -schemas=root \
-          -user=root \
-          -password=root migrate"
+          -url=jdbc:postgresql://postgres:5432/test \
+          -schemas=test \
+          -user=test \
+          -defaultSchema=test \
+          -password=test migrate"
     volumes:
       - ./migrations:/flyway/sql
       - ./drivers:/flyway/drivers
@@ -63,12 +55,4 @@ services:
 networks:
   postgres:
     driver: bridge
-```
 
-Save the target database JDBC Driver used by Flyway inside the **drivers** directory.
-
-This container uses [wait-for](https://github.com/ArcanjoQueiroz/wait-for) to wait for PostgreSQL database.
-
-### Licensing
-
-[Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0.html)
