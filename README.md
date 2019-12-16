@@ -1,5 +1,7 @@
 # Generic Flyway Docker Container
 
+[![Build Status](https://travis-ci.org/ArcanjoQueiroz/flyway.svg?branch=master)](https://travis-ci.org/ArcanjoQueiroz/flyway)
+
 ## Usage
 
 ### Running
