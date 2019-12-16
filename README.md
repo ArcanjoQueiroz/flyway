@@ -53,6 +53,7 @@ services:
           -url=jdbc:postgresql://postgres:5432/root \
           -schemas=root \
           -user=root \
+          -defaultSchema=root \
           -password=root migrate"
     volumes:
       - ./migrations:/flyway/sql
